@@ -17,17 +17,31 @@
 	
 //	class_setSuperclass([self class], NSClassFromString(@"MVMailBundle"));
 //	[ArchiveMailBundle registerBundle];
-	
 
-//	[[self alloc] init];
 
 	// Add a couple methods to the MessageViewer class.
 	Class MessageViewer = NSClassFromString(@"MessageViewer");
-	[[self class] copyMethod:@selector(_specialValidateMenuItem:) fromClass:[self class] toClass:MessageViewer];
-	[[self class] copyMethod:@selector(archiveSelectedMessages:) fromClass:[self class] toClass:MessageViewer];
+    
+    // swizzleSuccess should be NO if any of the following three calls fail
+    BOOL swizzleSuccess = YES;
+	swizzleSuccess &= [[self class] copyMethod:@selector(_specialValidateMenuItem:) 
+                                     fromClass:[self class] 
+                                       toClass:MessageViewer];
+	swizzleSuccess &= [[self class] copyMethod:@selector(archiveSelectedMessages:) 
+                                     fromClass:[self class] 
+                                       toClass:MessageViewer];
 	
 	// Swizzle the methods so our validate function gets called.
-	[[self class] swizzleMethod:@selector(validateMenuItem:) withMethod:@selector(_specialValidateMenuItem:) inClass:MessageViewer];
+	swizzleSuccess &= [[self class] swizzleMethod:@selector(validateMenuItem:) 
+                                       withMethod:@selector(_specialValidateMenuItem:) 
+                                          inClass:MessageViewer];
+    
+    // Don't add anything to the menu if the swizzling failed
+    if (!swizzleSuccess)
+    {
+        return;
+    }
+        
 	
 	// Find the "Message" menu.
 	NSMenu *mainMenu = [[NSApplication sharedApplication] mainMenu];
@@ -87,11 +101,9 @@
 	
 	if ([item action] == @selector(archiveSelectedMessages:))
 	{
-		NSArray *selMsgs = [self selectedMessages];
-		if ([selMsgs count] > 0) {
-			return TRUE;
-		}
-		return FALSE;
+        if ([[self selectedMessages] count] > 0)
+            return TRUE;
+        return FALSE;
 	}
 	return [self _specialValidateMenuItem:item];
 }	
@@ -136,5 +148,6 @@
 					method_getTypeEncoding(method));
 	return YES;
 }
+
 
 @end
