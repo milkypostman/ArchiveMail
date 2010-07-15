@@ -22,7 +22,9 @@
 		0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		3E428F8411CD613400E6E349 /* ArchiveMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArchiveMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E428F8511CD613400E6E349 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
-		3E82046E11CC17230029D2C0 /* mail.app.dump */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mail.app.dump; sourceTree = "<group>"; };
+		3E5F5E7411D258D000A8A35D /* Mail.app.classes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Mail.app.classes; sourceTree = "<group>"; };
+		3E5F5E7511D258D000A8A35D /* Message.framework.classes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Message.framework.classes; sourceTree = "<group>"; };
+		3ED45D2F11D075BA00B429FF /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		3EF4504611CACD93001795AE /* ArchiveMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveMailBundle.h; sourceTree = "<group>"; };
 		3EF4504711CACD93001795AE /* ArchiveMailBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveMailBundle.m; sourceTree = "<group>"; };
 		3EF450FC11CAD6A5001795AE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -73,7 +75,9 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3E82046E11CC17230029D2C0 /* mail.app.dump */,
+				3E5F5E7411D258D000A8A35D /* Mail.app.classes */,
+				3E5F5E7511D258D000A8A35D /* Message.framework.classes */,
+				3ED45D2F11D075BA00B429FF /* README */,
 				8D576317048677EA00EA77CD /* Info.plist */,
 				8D5B49A704867FD3000E48DA /* InfoPlist.strings */,
 				3E428F8511CD613400E6E349 /* Info copy.plist */,
