@@ -17,17 +17,31 @@
 	
 //	class_setSuperclass([self class], NSClassFromString(@"MVMailBundle"));
 //	[ArchiveMailBundle registerBundle];
-	
 
-//	[[self alloc] init];
 
 	// Add a couple methods to the MessageViewer class.
 	Class MessageViewer = NSClassFromString(@"MessageViewer");
-	[[self class] copyMethod:@selector(_specialValidateMenuItem:) fromClass:[self class] toClass:MessageViewer];
-	[[self class] copyMethod:@selector(archiveSelectedMessages:) fromClass:[self class] toClass:MessageViewer];
+    
+    // swizzleSuccess should be NO if any of the following three calls fail
+    BOOL swizzleSuccess = YES;
+	swizzleSuccess &= [[self class] copyMethod:@selector(_specialValidateMenuItem:) 
+                                     fromClass:[self class] 
+                                       toClass:MessageViewer];
+	swizzleSuccess &= [[self class] copyMethod:@selector(archiveSelectedMessages:) 
+                                     fromClass:[self class] 
+                                       toClass:MessageViewer];
 	
 	// Swizzle the methods so our validate function gets called.
-	[[self class] swizzleMethod:@selector(validateMenuItem:) withMethod:@selector(_specialValidateMenuItem:) inClass:MessageViewer];
+	swizzleSuccess &= [[self class] swizzleMethod:@selector(validateMenuItem:) 
+                                       withMethod:@selector(_specialValidateMenuItem:) 
+                                          inClass:MessageViewer];
+    
+    // Don't add anything to the menu if the swizzling failed
+    if (!swizzleSuccess)
+    {
+        return;
+    }
+        
 	
 	// Find the "Message" menu.
 	NSMenu *mainMenu = [[NSApplication sharedApplication] mainMenu];
@@ -58,32 +72,28 @@
 
 - (IBAction) archiveSelectedMessages:(id)sender
 {
-	// Get the selected messages
-	NSMutableArray *selMsgs = [self selectedMessages];
-
-	for (int i=0; i < [selMsgs count]; i++) {
-		NSObject *msg = [selMsgs objectAtIndex:i];
-		NSMutableArray *allMbx = [[msg account] allMailboxUids];
-		
-		// Look for an "Archive" folder.
-		for (int j=0; j< [allMbx count]; j++) {
-			// Get the mailbox of the message we're looking at.
-			NSObject *mbx = [allMbx objectAtIndex:j];
-			if ([[mbx name] isEqual:@"Archive"]) {
-				// We have to selected only the message we're interested in moving.
-				// Each message may be in a different account.
-				[[self tableManager] selectMessages:[NSArray arrayWithObject:msg]];
-				// To do the move we have to generate an event from a menu item.
-				NSObject *mi = [[NSMenuItem alloc] init];
-				[mi setRepresentedObject:mbx];
-				[self moveMessagesToMailbox:mi];
-				[mi release];
-				break;
-			}
-		}
-	}
-	
+	// For each selected message
+    for (id msg in [self selectedMessages])
+    {
+        // Look for the Archive mailbox in the mail account for the selected message
+        for (id mbx in [[msg account] allMailboxUids])
+        {
+            if ([[mbx name] isEqual:@"Archive"])
+            {
+                // Select the message we're currently processing
+                [[self tableManager] selectMessages:[NSArray arrayWithObject:msg]];
+                
+                // Create a fake menu item representing the message
+                NSMenuItem *mi = [[NSMenuItem alloc] init];
+                [mi setRepresentedObject:mbx];
+                [self moveMessagesToMailbox:mi];
+                [mi release];
+                break;
+            }
+        }
+    }
 }
+
 
 - (BOOL)_specialValidateMenuItem:(NSMenuItem *)item 
 {
@@ -91,14 +101,13 @@
 	
 	if ([item action] == @selector(archiveSelectedMessages:))
 	{
-		NSMutableArray *selMsgs = [self selectedMessages];
-		if ([selMsgs count] > 0) {
-			return TRUE;
-		}
-		return FALSE;
+        if ([[self selectedMessages] count] > 0)
+            return TRUE;
+        return FALSE;
 	}
 	return [self _specialValidateMenuItem:item];
 }	
+
 
 + (BOOL)swizzleMethod:(SEL)origSel withMethod:(SEL)altSel inClass:(Class)cls
 {
@@ -123,6 +132,7 @@
 	
 }
 
+
 + (BOOL) copyMethod:(SEL)sel fromClass:(Class)fromCls toClass:(Class)toCls
 {
 	// copy a method from one class to another.
@@ -138,5 +148,6 @@
 					method_getTypeEncoding(method));
 	return YES;
 }
+
 
 @end
