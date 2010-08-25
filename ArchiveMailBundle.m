@@ -75,22 +75,13 @@
 	// For each selected message
     for (id msg in [self selectedMessages])
     {
-        // Look for the Archive mailbox in the mail account for the selected message
-        for (id mbx in [[msg account] allMailboxUids])
-        {
-            if ([[mbx name] isEqual:@"Archive"])
-            {
-                // Select the message we're currently processing
-                [[self tableManager] selectMessages:[NSArray arrayWithObject:msg]];
-                
-                // Create a fake menu item representing the message
-                NSMenuItem *mi = [[NSMenuItem alloc] init];
-                [mi setRepresentedObject:mbx];
-                [self moveMessagesToMailbox:mi];
-                [mi release];
-                break;
-            }
-        }
+		NSObject *account = [msg account];
+		NSObject *mailbox = [account mailboxUidForRelativePath:@"Archive" create:NO];
+		
+		if ([msg mailbox] != mailbox)
+		{
+			[self _transferMessages:[NSArray arrayWithObject:msg] toMailbox:mailbox deleteOriginals:YES allowUndo:YES isDeleteOperation:NO];
+		}
     }
 }
 
