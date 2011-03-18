@@ -20,7 +20,7 @@
 /* Begin PBXFileReference section */
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
-		3E428F8411CD613400E6E349 /* ArchiveMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArchiveMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E428F8411CD613400E6E349 /* ArchiveMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ArchiveMail.mailbundle; path = /Users/dcurtis/Dropbox/Development/ArchiveMail/build/Release/ArchiveMail.mailbundle; sourceTree = "<absolute>"; };
 		3E5F5E7411D258D000A8A35D /* Mail.app.classes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Mail.app.classes; sourceTree = "<group>"; };
 		3E5F5E7511D258D000A8A35D /* Message.framework.classes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Message.framework.classes; sourceTree = "<group>"; };
 		3E62DD8711FF4C9F0076A273 /* LoadBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LoadBundle-Info.plist"; sourceTree = "<group>"; };
@@ -98,7 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				8D576316048677EA00EA77CD /* ArchiveMail.mailbundle */,
-				3E428F8411CD613400E6E349 /* ArchiveMail.mailbundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -268,6 +267,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
+				CURRENT_PROJECT_VERSION = 2.0;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -286,6 +286,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CURRENT_PROJECT_VERSION = 2.0;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

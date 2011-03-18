@@ -24,6 +24,8 @@
     
     // swizzleSuccess should be NO if any of the following three calls fail
     BOOL swizzleSuccess = YES;
+    
+    // ad methods to the MessageViewer class
 	swizzleSuccess &= [[self class] copyMethod:@selector(_specialValidateMenuItem:) 
                                      fromClass:[self class] 
                                        toClass:MessageViewer];
@@ -77,8 +79,11 @@
     {
 		NSObject *account = [msg account];
 		NSObject *mailbox = [account mailboxUidForRelativePath:@"Archive" create:NO];
-		
-		if ([msg mailbox] != mailbox)
+        if (mailbox == nil) {
+            mailbox = [account mailboxUidForRelativePath:@"[Gmail]/All Mail" create:NO];
+        }
+		NSLog(@"%@",mailbox);
+		if (mailbox != nil && [msg mailbox] != mailbox)
 		{
 			[self _transferMessages:[NSArray arrayWithObject:msg] toMailbox:mailbox deleteOriginals:YES allowUndo:YES isDeleteOperation:NO];
 		}
